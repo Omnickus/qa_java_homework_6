@@ -1,6 +1,0 @@
-pages\BasePage.class
-driver\EnumWebDriverType.class
-driver\WebDriverSetup.class
-driver\WebDriverFactory.class
-pages\MainPage.class
-tests\MainPageTest.class

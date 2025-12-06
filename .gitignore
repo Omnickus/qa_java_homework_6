@@ -2,7 +2,8 @@ logs/
 .vscode/
 .idea/
 target/
-homework/target/
+/target/*
+homework/target/*
 
 # Compiled class file
 *.class
