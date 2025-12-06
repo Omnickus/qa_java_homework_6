@@ -1,5 +1,8 @@
-.vscode
-homework/target
+logs/
+.vscode/
+.idea/
+target/
+homework/target/
 
 # Compiled class file
 *.class
