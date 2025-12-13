@@ -1,6 +1,7 @@
-package pages;
+package main.java.pages;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Для логирования
 import org.apache.logging.log4j.LogManager;
@@ -9,17 +10,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import driver.WebDriverSetup;
+import main.java.pages.AbsBasePage;
 
-public class MainPage extends BasePage {
+public class MainPage extends AbsBasePage {
+
+    private static final Logger logger = LogManager.getLogger(MainPage.class);
 
     public MainPage(WebDriver driver) {
-        super(driver);
+        super(driver, "form.html");
     }
-
-    private static final Logger logger = LogManager.getLogger(WebDriverSetup.class);
-
-    private String url = "https://otus.home.kartushin.su/form.html";
 
     // Известные элементы
     private String xpathUsername = "//*[@id='username']";
@@ -29,17 +28,11 @@ public class MainPage extends BasePage {
     private String xpathBirthDate = "//*[@id='birthdate']";
 
     private String xpathLanguageLevelDropdown = "//*[@id='language_level']";
-
     private String xpathButtonSubmitForm = "//*[@id='registrationForm']/input[@type='submit']";
-
     private String xpathOutputRegistrationData = "//*[@id='output']";
 
-    //* Открыть главную страницу */
-    public MainPage open() {
-        driver.get(this.url);
-        logger.info("Открыта страница {}", this.url);
-        return this;
-    }
+    // Вспомогательные переменные
+    private String selected_language_level;
 
     //* Заполнить поле имя пользователя */
     public MainPage sendKeysUsername(String username) {
@@ -98,16 +91,17 @@ public class MainPage extends BasePage {
     }
 
     //* Заполнить поле Уровень знания языка */
-    public WebElement sendKeysLanguageProficiencyLevel(String level) {
+    public MainPage sendKeysLanguageProficiencyLevel(String level) {
         logger.info("Находим и раскрываем выпадающий список с уровнями владения языка");
         WebElement select_language_level = driver.findElement(By.xpath(this.xpathLanguageLevelDropdown));
         select_language_level.click();
         logger.info("Находим уровень '{}' и выбираем его", level);
         WebElement option = driver.findElement(By.xpath(this.xpathLanguageLevelDropdown + String.format("/option[text()='%s']", level)));
+        this.selected_language_level = option.getAttribute("value");
         option.click();
         logger.info("Нажимаю на выпадающий список для его закрытия");
         select_language_level.click();
-        return option;
+        return this;
     }
 
     //* Нажатие на кнопку зарегистрироваться */
@@ -118,15 +112,24 @@ public class MainPage extends BasePage {
         return this;
     }
 
-    //* Получить элемент OutPut формы */
-    public WebElement findOutputDataAfterRegistration() {
+    //* Получить элемент OutPut формы и сравнить */
+    public MainPage findOutputDataAfterRegistrationAndCheck(String username, String email, String text_btith_date_for_check) {
         WebElement output_data = driver.findElement(By.xpath(this.xpathOutputRegistrationData));
         String output_data_inner_text = output_data.getText();
         logger.info("Данные в поле output:\n{}\n====================", output_data_inner_text);
-        return output_data;
+        assertTrue(output_data_inner_text.contains(String.format("Имя пользователя: %s", username)),
+                "Неверное имя пользвоателя в окне с выводом данных");
+        assertTrue(output_data_inner_text.contains(String.format("Электронная почта: %s", email)),
+                "Неверное электронная почта пользвоателя в окне с выводом данных");
+        assertTrue(output_data_inner_text.contains(String.format("Дата рождения: %s", text_btith_date_for_check)),
+                "Неверная дата рождения пользвоателя в окне с выводом данных");
+        assertTrue(output_data_inner_text.contains(String.format("Уровень языка: %s", this.selected_language_level)),
+                "Не верный уровень языка пользвоателя в окне с выводом данных");
+        return this;
     }
 
 
 
 
 }
+

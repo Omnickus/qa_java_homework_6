@@ -1,4 +1,4 @@
-package driver;
+package main.java.factory;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -14,11 +14,15 @@ public class WebDriverSetup {
 
     private static final Logger logger = LogManager.getLogger(WebDriverSetup.class);
 
-    public static WebDriver driver;
-    private String BASE_PAGE = "https://otus.home.kartushin.su/form.html";
+    public WebDriver driver;
 
     @BeforeAll
-    public static void driverStart() {
+    public static void driverSetup() {
+        // Теперь стал пустым (Перенёс инициализапцию драйвера в @BeforeEach)
+    }
+
+    @BeforeEach
+    public void driverStart() {
         logger.info("Начало инициализации драйвера");
         String browser = System.getProperty("browser");
         String cmdOptions = System.getProperty("options");
@@ -35,26 +39,20 @@ public class WebDriverSetup {
             }
         }
     }
-
-    @BeforeEach
-    public void testStart() {
-        logger.info("Наинаем проходить тест");
-        driver.get(this.BASE_PAGE);
-    }
     
     @AfterEach
     public void testCompleted() {
-        logger.info("Тест завершён");
-    }
-    
-    @AfterAll
-    public static void allTestsCompleted() {
-        logger.info("=== Завершение всех тестов ===");
         if (driver != null) {
             driver.quit();
             driver = null;
             logger.info("Драйвер закрыт");
         }
+        logger.info("=== Завершение теста ===");
+    }
+
+    @AfterAll
+    public static void testingCompleted() {
+        logger.info("=== Завершение прогона тестов ===");
     }
 
 }

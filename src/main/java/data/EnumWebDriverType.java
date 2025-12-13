@@ -1,4 +1,4 @@
-package driver;
+package main.java.data;
 
 public enum EnumWebDriverType {
 
