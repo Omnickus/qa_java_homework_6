@@ -1,7 +1,5 @@
-package main.java.pages;
+package pages;
 
-
-import java.util.logging.LogManager;
 
 import org.openqa.selenium.WebDriver;
 

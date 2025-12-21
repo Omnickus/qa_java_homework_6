@@ -1,4 +1,4 @@
-package main.java.factory;
+package factory;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -10,26 +10,17 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import main.java.data.EnumWebDriverType;
-
 public class WebDriverFactory {
 
     private static final Logger logger = LogManager.getLogger(WebDriverFactory.class);
 
     public static WebDriver createWebDriver(String browser, String options) {
 
-        // Проверяем, что драйвер поддерживиется
-        try {
-            EnumWebDriverType.valueOf(browser.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Не поддерживаемый тип браузера: " + browser);
-        }
-
         WebDriver driver;
 
         logger.info("Создаём объект драйвера");
         logger.info("Выбран браузер: " + browser);
-
+        
         switch (browser.toLowerCase()) {
             case "chrome":
                 ChromeOptions chrome_options = new ChromeOptions();

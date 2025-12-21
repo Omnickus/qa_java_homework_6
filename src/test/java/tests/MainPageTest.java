@@ -4,10 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 
-import main.java.factory.WebDriverSetup;
-import main.java.pages.MainPage;
+import factory.WebDriverSetup;
+import pages.MainPage;
 
 // Для логирования
 import org.apache.logging.log4j.LogManager;

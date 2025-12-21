@@ -1,9 +1,7 @@
-logs/
-.vscode/
-.idea/
-target/
-/target/*
-homework/target/*
+logs
+.vscode
+.idea
+target
 
 # Compiled class file
 *.class
